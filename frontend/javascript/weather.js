@@ -1,11 +1,11 @@
 // WEATHER CONFIG
 // ─────────────────────────────────────────────────────────────
 // LOCAL TESTING  → set USE_PROXY = false  (calls OpenWeatherMap directly)
-// AFTER VPS LIVE → set USE_PROXY = true   (API key hidden on server)
+
 // ─────────────────────────────────────────────────────────────
 const USE_PROXY   = false;
 const BACKEND_URL = "https://api.ciliguide.com";        // your VPS domain (used when USE_PROXY = true)
-const API_KEY     = "fef445b9b683f560074d65d982467fe0"; // only used when USE_PROXY = false
+ 
 
 
 // HELPER — fetch weather+forecast by city name
