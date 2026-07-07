@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - CiliGuide</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="icon" type="image/png" href="../assets/images/chili_logo3.png">
+</head>
+
+<body>
+
+  <!--Navigation-->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo"><img src="../assets/images/chili_logo3.png"></div>
+      <span class="nav-brand-text">CiliGuide</span>
+    </a>
+
+    <!-- Hamburger shown on mobile only -->
+    <button class="hamburger" id="hamburgerBtn">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+  </nav>
+
+  <!-- Dark overlay for mobile sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="layout">
+
+    <!-- Side Bar -->
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sb-user">
+        <div class="sb-av-wrap">
+          <img class="sb-avatar" id="userAvatar" alt="Avatar" />
+          <span class="sb-online"></span>
+        </div>
+        <h4 id="userName">User</h4>
+        <p id="userEmail">user@gmail.com</p>
+
+        <span class="sb-role">🌶️ Home Grower</span>
+      </div>
+
+      <nav class="sb-nav">
+        <span class="sb-section-label">Menu</span>
+
+        <button class="sb-item active" data-nav="overview">
+          <span class="sb-icon">🏠</span><span>Overview</span>
+        </button>
+
+        <button class="sb-item" data-nav="profile">
+          <span class="sb-icon">👤</span><span>My Profile</span>
+        </button>
+
+        <button class="sb-item" data-nav="history">
+          <span class="sb-icon">📋</span><span>My History</span>
+        </button>
+
+        <!-- Harvest Toggle -->
+        <button class="sb-item" id="harvestToggle">
+          <span class="sb-icon">🌱</span>
+          <span>Harvest Tracker</span>
+          <span class="sb-arrow">▶</span>
+        </button>
+
+        <div class="sb-submenu" id="harvestSubMenu">
+          <button class="sb-subitem" id="sb-tracking" data-nav="harvest">📊 Tracking</button>
+          <button class="sb-subitem" id="sb-harvest-analysis" data-nav="harvest-prediction">
+            📈 Harvest Analysis
+          </button>
+          <button class="sb-subitem" data-nav="harvest-report">📝 Harvest Report</button>
+
+        </div>
+
+        <button class="sb-item" data-nav="community">
+          <span class="sb-icon">🌿</span><span>Community</span>
+        </button>
+
+      </nav>
+
+      <div class="sb-footer">
+        <button class="btn-logout" onclick="openLogoutModal()">
+          🚪 Log Out
+        </button>
+      </div>
+
+    </aside>
+
+    <!--Main Content -->
+    <main class="main">
+
+      <!-- Overview -->
+      <section class="page active" id="sec-overview">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard</p>
+          <h1>Overview</h1>
+          <p class="page-sub">Welcome back! Here's your chili garden at a glance.</p>
+        </div>
+
+        <div class="welcome-banner">
+          <div>
+            <h2 id="welcomeName">Good Day, User! 👋</h2>
+            <p id="welcomeHarvestText">Your chili plant progress will be appear here.</p>
+          </div>
+          <span class="wb-emoji">🌶️</span>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon red">🌱</div>
+            <div>
+              <div class="stat-val" id="statActiveCycles">0</div>
+              <div class="stat-lbl">Active Harvest Cycles</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">💬</div>
+            <div>
+              <div class="stat-val" id="statAIQueries">0</div>
+              <div class="stat-lbl">AI Queries This Month</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon yellow">📅</div>
+            <div>
+              <div class="stat-val" id="statNextHarvest">–</div>
+              <div class="stat-lbl" id="statNextHarvestLabel">Days to Next Harvest</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top row: Recent Activity + Active Harvest -->
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">📋</span>
+                <h3>Recent Activity</h3>
+              </div>
+              <span class="live-badge">● Live</span>
+            </div>
+            <div class="card-body" style="padding:0" id="recentActivityContainer">
+              <!-- Activities will load here -->
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">🌱</span>
+                <h3>Active Harvest</h3>
+              </div>
+              <button class="btn btn-outline btn-sm"
+                onclick="navigate('harvest', document.querySelector('[onclick*=harvest]'))">View All →</button>
+            </div>
+            <div class="card-body" id="activeHarvestCard">
+              <div style="text-align:center;padding:40px;color:#777">
+                Loading harvest data...
+              </div>
+            </div>
+          </div>
+        </div><!-- /two-col -->
+
+        <!-- Bottom: Feature Progress (full width) -->
+        <div class="card feature-card" id="featureUnlockCard">
+          <div class="card-head">
+            <div class="ch-row">
+              <span class="ch-icon">🔓</span>
+              <h3>Feature Progress</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="feature-unlock-status" id="overviewFeatureUnlock">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+        </div>
+
+      </section><!-- /sec-overview -->
+
+
+      <!-- Profile -->
+      <section class="page" id="sec-profile">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard · Profile</p>
+          <h1>My Profile</h1>
+          <p class="page-sub">Manage your account information and security settings.</p>
+        </div>
+
+        <div class="card mb">
+          <div class="profile-top">
+            <div class="prof-av-wrap">
+              <img class="prof-avatar" id="profileAvatar" alt="Avatar" />
+              <span class="prof-badge" title="Auto-generated avatar">✨</span>
+            </div>
+            <div>
+              <h3 id="profileName">Loading...</h3>
+              <p id="profileEmail">Loading...</p>
+              <span class="joined" id="profileJoined">Member since -</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="inputUsername" />
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="inputEmail" readonly />
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="inputPhone" />
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="inputLocation" />
+              </div>
+              <!-- Experience Level (READ ONLY) -->
+              <div class="form-group">
+                <label>EXPERIENCE LEVEL</label>
+                <div class="level-display-box">
+                  <span id="displayRole" class="level-badge">Beginner Home Grower</span>
+                  <span id="roleReason" class="level-reason">Auto-upgraded after 0 cycles</span>
+                </div>
+                <p class="field-hint">Level automatically increases as you complete more cycles.</p>
+              </div>
+              <div class="form-group">
+                <label>Bio</label>
+                <textarea maxlength="160" id="bioText"></textarea>
+                <p class="char-count" id="bioCount">0 / 160</p>
+              </div>
+
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-ghost">Discard</button>
+              <button class="btn btn-red" id="btnSaveProfile">Save Changes</button>
+            </div>
+          </div>
+        </div><!-- /card -->
+
+        <div class="card mb">
+          <div class="card-head">
+            <div class="ch-row">
+              <span class="ch-icon">🔑</span>
+              <h3>Change Password</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <form id="changePasswordForm">
+              <div class="form-grid">
+
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" id="inputCurrentPassword" />
+                </div>
+
+                <div class="form-group pw-spacer"></div>
+
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" id="newPwInput" minlength="6" />
+                  <p class="strength-hint" id="strengthHint">Enter a new password</p>
+                </div>
+
+                <div class="form-group">
+                  <label>Confirm Password</label>
+                  <input type="password" id="inputConfirmPassword" />
+                </div>
+
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-red" id="btnUpdatePassword">
+                  Update Password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div><!-- /card -->
+
+        <div class="card danger-card">
+          <div class="card-head">
+            <div class="ch-row">
+              <span class="ch-icon danger-icon">⚠️</span>
+              <h3>Danger Zone</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="danger-desc">These actions are permanent and cannot be undone.</p>
+            <div class="danger-row">
+              <button class="btn btn-danger" id="btnDeleteAccount">Delete Account</button>
+            </div>
+          </div>
+        </div><!-- /card -->
+
+      </section><!-- /sec-profile -->
+
+
+      <!-- History -->
+      <section class="page" id="sec-history">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard · History</p>
+          <h1>My History</h1>
+          <p class="page-sub">All your past queries, recommendations and detections.</p>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterHistory('all',this)">All</button>
+          <button class="filter-btn" onclick="filterHistory('chat',this)">💬 Chat</button>
+          <button class="filter-btn" onclick="filterHistory('fertilizer',this)">🧪 Fertilizer</button>
+          <button class="filter-btn" onclick="filterHistory('disease',this)">🔬 Disease</button>
+          <button class="filter-btn" onclick="filterHistory('soil',this)">🪴 Soil</button>
+          <button class="filter-btn" onclick="filterHistory('post-harvest',this)">📦 Post-Harvest</button>
+          <button class="filter-btn" onclick="filterHistory('harvest',this)">🌱 Harvest</button>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="ch-row">
+              <span class="ch-icon">🕐</span>
+              <h3>Activity Log</h3>
+            </div>
+            <span class="live-badge">● Live</span>
+          </div>
+          <div id="history-empty" class="empty-state" style="display: none;">
+            <div style="font-size: 2.5rem;">📭</div>
+            <p>No activity history yet.</p>
+          </div>
+          <div id="history-list">
+            <!-- retrieve from history.js -->
+          </div>
+        </div><!-- /card -->
+
+      </section><!-- /sec-history -->
+
+
+      <!-- Harvest Tracker -->
+      <section class="page" id="sec-harvest">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard · Harvest Tracker</p>
+          <h1>Harvest Tracker</h1>
+          <p class="page-sub">Monitor every growth stage with weather-tailored care guidance.</p>
+        </div>
+
+        <div class="weather-banner">
+          <div class="w-main">
+            <span class="w-icon" id="w-icon-val">⛅</span>
+            <div>
+              <div class="w-temp" id="w-temp-val">--°C</div>
+              <div class="w-desc" id="w-desc-val">Loading...</div>
+              <div class="w-loc" id="w-loc-val">📍 Loading...</div>
+            </div>
+          </div>
+          <div class="w-div"></div>
+          <div class="w-stats">
+            <div>
+              <div class="ws-val" id="w-humidity">--%</div>
+              <div class="ws-lbl">Humidity</div>
+            </div>
+            <div>
+              <div class="ws-val" id="w-wind">-- km/h</div>
+              <div class="ws-lbl">Wind</div>
+            </div>
+            <div>
+              <div class="ws-val" id="w-uv">UV --</div>
+              <div class="ws-lbl">UV Index</div>
+            </div>
+          </div>
+          <div class="w-div"></div>
+          <div class="w-forecast" id="w-forecast-container"></div>
+        </div>
+
+        <div class="alert-strip">
+          <div class="alert-pill heat" id="heat-alert"></div>
+          <div class="alert-pill rain" id="rain-alert"></div>
+        </div>
+
+        <!-- TAB BAR — shown/hidden per role by applyRoleBasedUI -->
+        <div class="harvest-tab-bar" id="harvestTabBar">
+          <button class="harvest-tab active" id="htab-cycles" onclick="switchHarvestTab('cycles')">
+            Cycles
+          </button>
+          <button class="harvest-tab" id="htab-report" onclick="switchHarvestTab('report')">
+            Cycle Report
+          </button>
+          <button class="harvest-tab" id="htab-compare" onclick="switchHarvestTab('compare')" style="display:none;">
+            Comparison
+          </button>
+          <button class="harvest-tab" id="htab-analytics" onclick="switchHarvestTab('analytics')" style="display:none;">
+            Analytics
+          </button>
+          <button class="harvest-tab" id="htab-personal-best" onclick="switchHarvestTab('personal-best')"
+            style="display:none;">
+            Personal Best Tracker
+          </button>
+        </div>
+
+        <!-- TAB: CYCLES (all roles) -->
+        <div class="harvest-tab-content" id="htab-content-cycles">
+          <div class="cycles-grid" id="cyclesContainer">
+            <div class="cycle-left-col">
+              <div id="activeCycleContainer"></div>
+              <div id="noHarvestState" class="empty-state">
+                <div style="font-size:3rem;">🌱</div>
+                <h3>No Active Harvest</h3>
+                <p>Your active harvest cycle will appear here.</p>
+              </div>
+            </div>
+            <div class="cycle-right-col">
+              <div id="completedCyclesContainer"></div>
+              <div class="new-cycle-box">
+                <div class="nc-icon">🌱</div>
+                <p>Plant a new chili and get weather-tailored care from Day 1 to Harvest.</p>
+                <button class="btn btn-red" id="startCycleBtn" onclick="openCycleModal()">
+                  + Start New Cycle
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: CYCLE REPORT (all roles) -->
+        <div class="harvest-tab-content" id="htab-content-report" style="display:none;">
+          <div class="card mb">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">📋</span>
+                <h3>Cycle Stage Report</h3>
+              </div>
+            </div>
+            <div id="cycleReportContainer" style="padding:16px;">
+              <div style="text-align:center;color:var(--muted);padding:30px;">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: COMPARISON (intermediate + advanced) -->
+        <div class="harvest-tab-content" id="htab-content-compare" style="display:none;">
+          <div class="card mb">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">📊</span>
+                <h3>Variety Comparison</h3>
+              </div>
+            </div>
+            <div id="comparisonContainer">
+              <div class="empty-state" id="comparisonEmpty">
+                <p>Start at least 2 cycles to compare varieties.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: ANALYTICS (experienced + intermediate only) -->
+
+        <div class="harvest-tab-content" id="htab-content-analytics" style="display:none;">
+          <div class="card mb">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">📈</span>
+                <h3>Growth Analytics</h3>
+              </div>
+            </div>
+            <div id="analyticsContainer" style="padding:16px;">
+              <div style="text-align:center;color:var(--muted);padding:30px;">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PERSONAL BEST (experienced only) -->
+        <div class="harvest-tab-content" id="htab-content-personal-best" style="display:none;">
+          <div class="card mb">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">🏆</span>
+                <h3>Personal Best Tracker</h3>
+              </div>
+            </div>
+            <div id="personalBestContainer" style="padding:16px;">
+              <div style="text-align:center;color:var(--muted);padding:30px;">Loading your records...</div>
+            </div>
+          </div>
+        </div>
+
+      </section><!-- /sec-harvest -->
+
+      <!-- Harvest Prediction -->
+      <section class="page" id="sec-harvest-prediction">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard · Harvest Tracker · Harvest Analysis</p>
+          <h1>Harvest Analysis (Smart Prediction)</h1>
+          <p class="page-sub">Predict your future harvest yield based on selected planting conditions and environmental
+            factors.</p>
+        </div>
+
+        <!-- Malaysian Growing Seasons -->
+        <div class="section-title">
+          <h2>🌏 Malaysian Growing Seasons</h2>
+          <p>Malaysian monsoon seasons &amp; their impact on chili harvest</p>
+        </div>
+
+        <div class="season-grid">
+
+          <!-- DRY SEASON -->
+          <div class="season-card">
+            <div class="card-top">
+              <div>
+                <div class="card-season-name">Dry Season ☀️</div>
+                <div class="card-season-sub">Musim Kering</div>
+              </div>
+              <div class="card-date">January – March</div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-stats">
+              <div class="stat-row">
+                <span class="stat-icon">🌡️</span>
+                <span class="stat-label">Temperature</span>
+                <span class="stat-value">27–33°C</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">💧</span>
+                <span class="stat-label">Rainfall</span>
+                <span class="stat-value">Low (100–150mm)</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">☀️</span>
+                <span class="stat-label">Sunlight</span>
+                <span class="stat-value stat-value--red">6–8 hours/day</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">💨</span>
+                <span class="stat-label">Humidity</span>
+                <span class="stat-value">60–70%</span>
+              </div>
+            </div>
+            <div class="spice-box">
+              <div class="spice-box-title">🌶 Spiciness</div>
+              <div class="spice-inner">
+                <div class="spice-stars">
+                  <span>🌶️</span><span>🌶️</span><span>🌶️</span>
+                  <span class="spice-off">🌶️</span>
+                </div>
+                <span class="spice-label">Medium-High</span>
+              </div>
+            </div>
+            <div class="impact-box">
+              <div class="impact-title">Impacts</div>
+              <div class="impact-item"><span class="impact-icon">✅</span> Strong growth &amp; flowering</div>
+              <div class="impact-item"><span class="impact-icon">✅</span> High capsaicin production</div>
+              <div class="impact-item"><span class="impact-icon">⚠️</span> Heat stress above 35°C</div>
+              <div class="impact-item"><span class="impact-icon">⚠️</span> Frequent watering needed (2×/day)</div>
+            </div>
+          </div>
+
+          <!-- INTER-MONSOON SEASON -->
+          <div class="season-card season-best">
+            <div class="card-top">
+              <div>
+                <div class="card-season-name">Inter-Monsoon ⛅</div>
+                <div class="card-season-sub">Musim Peralihan</div>
+              </div>
+              <div class="season-best-date-col">
+                <div class="card-date">April – September</div>
+                <span class="season-best-badge">Best season</span>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-stats">
+              <div class="stat-row">
+                <span class="stat-icon">🌡️</span>
+                <span class="stat-label">Temperature</span>
+                <span class="stat-value">25–31°C</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">💧</span>
+                <span class="stat-label">Rainfall</span>
+                <span class="stat-value">Moderate (150–250mm)</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">☀️</span>
+                <span class="stat-label">Sunlight</span>
+                <span class="stat-value stat-value--red">6–7 hours/day</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">💨</span>
+                <span class="stat-label">Humidity</span>
+                <span class="stat-value">70–80%</span>
+              </div>
+            </div>
+            <div class="spice-box">
+              <div class="spice-box-title">🌶 Spiciness</div>
+              <div class="spice-inner">
+                <div class="spice-stars">
+                  <span>🌶️</span><span>🌶️</span><span>🌶️</span><span>🌶️</span>
+                </div>
+                <span class="spice-label">High</span>
+              </div>
+            </div>
+            <div class="impact-box">
+              <div class="impact-title">Impacts</div>
+              <div class="impact-item"><span class="impact-icon">✅</span> Best growth &amp; highest yield</div>
+              <div class="impact-item"><span class="impact-icon">✅</span> Balanced sun &amp; rainfall</div>
+              <div class="impact-item"><span class="impact-icon">✅</span> Lower disease &amp; pest risk</div>
+              <div class="impact-item"><span class="impact-icon">⚠️</span> Monitor rain in some months</div>
+            </div>
+          </div>
+
+          <!-- RAIN SEASON -->
+          <div class="season-card">
+            <div class="card-top">
+              <div>
+                <div class="card-season-name">Rain Season 🌧️</div>
+                <div class="card-season-sub">Musim Hujan</div>
+              </div>
+              <div class="card-date">October – December</div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-stats">
+              <div class="stat-row">
+                <span class="stat-icon">🌡️</span>
+                <span class="stat-label">Temperature</span>
+                <span class="stat-value">24–29°C</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">🌧️</span>
+                <span class="stat-label">Rainfall</span>
+                <span class="stat-value stat-value--red">Heavy (300mm+)</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">☁️</span>
+                <span class="stat-label">Sunlight</span>
+                <span class="stat-value stat-value--red">4–6 hours/day</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">💨</span>
+                <span class="stat-label">Humidity</span>
+                <span class="stat-value stat-value--red">80–90%</span>
+              </div>
+            </div>
+            <div class="spice-box">
+              <div class="spice-box-title">🌶 Spiciness</div>
+              <div class="spice-inner">
+                <div class="spice-stars">
+                  <span>🌶️</span><span>🌶️</span>
+                  <span class="spice-off">🌶️</span><span class="spice-off">🌶️</span>
+                </div>
+                <span class="spice-label">Low</span>
+              </div>
+            </div>
+            <div class="impact-box">
+              <div class="impact-title">Impacts</div>
+              <div class="impact-item"><span class="impact-icon">❌</span> Heavy rain reduces yield</div>
+              <div class="impact-item"><span class="impact-icon">❌</span> High disease risk (fungal)</div>
+              <div class="impact-item"><span class="impact-icon">❌</span> Low sunlight → fewer flowers</div>
+              <div class="impact-item"><span class="impact-icon">⚠️</span> Good drainage essential</div>
+            </div>
+          </div>
+
+        </div><!-- /season-grid -->
+
+        <!-- Smart Planting Guide -->
+        <div class="section-title">
+          <h2 style="color:#e74c3c;">Smart Planting Guide</h2>
+          <p>Get a prediction of your future harvest based on your planting conditions.</p>
+        </div>
+
+        <div class="guide-grid">
+
+          <!-- INPUT CONDITIONS card -->
+          <div class="guide-card">
+            <div class="guide-col-title">Input Conditions</div>
+
+            <!-- Row 1: Variety + Color -->
+            <div class="field-group">
+              <label>Chili Variety:</label>
+              <select id="sel-chili">
+                <option value="">Select</option>
+                <option>Cili Padi</option>
+                <option>Cili Besar</option>
+                <option>Cili Benggala</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Target Harvest Colour:</label>
+              <select id="sel-color">
+                <option value="">Select</option>
+              </select>
+            </div>
+
+            <!-- Row 2: Number of Plants + Growing Container -->
+            <div class="field-row">
+              <div class="field-group half">
+                <label>Number of Plants:</label>
+                <div class="plant-input-wrap">
+                  <input type="number" id="input-plants" min="1" max="50" value="4" />
+                  <span class="plant-hint">plants</span>
+                </div>
+              </div>
+              <div class="field-group half">
+                <label>Growing Container:</label>
+                <select id="sel-container">
+                  <option value="">Select</option>
+                  <option value="pot">Pot (Standard)</option>
+                  <option value="grow_bag">Grow Bag</option>
+                  <option value="raised_bed">Raised Bed</option>
+                  <option value="ground">Ground / Garden Bed</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 3: Growing Environment + Soil Type -->
+            <div class="field-row">
+              <div class="field-group half">
+                <label>Growing Environment:</label>
+                <select id="sel-environment">
+                  <option value="">Select</option>
+                  <option>Indoor</option>
+                  <option>Outdoor</option>
+                  <option>Greenhouse</option>
+                </select>
+              </div>
+              <div class="field-group half">
+                <label>Soil Type:</label>
+                <select id="sel-soil">
+                  <option value="">Select</option>
+                  <option>Loamy</option>
+                  <option>Sandy</option>
+                  <option>Clay</option>
+                  <option>Peaty</option>
+                  <option>Potting Mix</option>
+                  <option>Coconut coir</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 4: Season + Watering Level -->
+            <div class="field-row">
+              <div class="field-group half">
+                <label>Season:</label>
+                <select id="sel-season">
+                  <option value="">Select</option>
+                  <option>Jan–Mar</option>
+                  <option>Apr–Sep</option>
+                  <option>Oct–Dec</option>
+                </select>
+              </div>
+              <div class="field-group half">
+                <label>Watering Level:</label>
+                <select id="sel-water">
+                  <option value="">Select</option>
+                  <option>Low</option>
+                  <option>Moderate</option>
+                  <option>High</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 5: Sunlight + Your Experience -->
+            <div class="field-row">
+              <div class="field-group half">
+                <label>Sunlight:</label>
+                <select id="sel-sun">
+                  <option value="">Select</option>
+                  <option>Full Sun</option>
+                  <option>Partial</option>
+                  <option>Low</option>
+                </select>
+              </div>
+              <div class="field-group half">
+                <label>Your Experience:</label>
+                <select id="sel-experience">
+                  <option value="">Select</option>
+                  <option value="beginner">Beginner — First time</option>
+                  <option value="intermediate">Intermediate — 2–4 cycles</option>
+                  <option value="experienced">Experienced — 5+ cycles</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn-predict" id="btn-predict">Predict Harvest</button>
+          </div>
+
+          <!-- PREDICTION RESULTS card -->
+          <div class="guide-card">
+            <div class="guide-col-title">Prediction Results</div>
+
+            <!-- Main Yield Box -->
+            <div class="yield-box">
+              <div class="yield-label">Total Yield</div>
+              <div class="yield-value" id="yield-value">-</div>
+              <div class="yield-sub" id="yield-sub">chilies harvested (estimated)</div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row-3">
+              <div class="stat-col">
+                <div class="sc-label">Weight</div>
+                <div class="sc-value" id="res-weight">-</div>
+              </div>
+              <div class="stat-col">
+                <div class="sc-label">Quality</div>
+                <div class="sc-value" id="res-quality">-</div>
+              </div>
+              <div class="stat-col">
+                <div class="sc-label">Confidence</div>
+                <div class="sc-value" id="res-confidence">-</div>
+              </div>
+            </div>
+
+            <!-- Days to Harvest -->
+            <div class="harvest-timeline">
+              <div class="timeline-label">Estimated Timeline</div>
+              <div class="timeline-bar">
+                <div class="timeline-fill" id="timeline-fill"></div>
+              </div>
+              <div class="timeline-text" id="timeline-text">Select conditions to see timeline</div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="reco-section-title">Recommendations</div>
+            <div class="reco-list" id="reco-list">
+              <div class="reco-item active" style="font-size:.78rem;line-height:1.65;">Fill in all conditions and click
+                Predict to get your personalized harvest
+                forecast.</div>
+            </div>
+          </div>
+
+        </div>
+      </section> <!-- /sec-harvest-analysis -->
+
+      <!-- Harvest Report -->
+      <section class="page" id="sec-harvest-report">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard · Harvest Tracker · Harvest Report</p>
+          <h1>Harvest Report</h1>
+          <p class="page-sub">Report your completed harvests and track performance.</p>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="report-two-col">
+
+          <!-- LEFT: Report Form -->
+          <div class="card">
+            <div class="card-head">
+              <div class="ch-row">
+                <span class="ch-icon">📝</span>
+                <h3>Report New Harvest</h3>
+              </div>
+            </div>
+            <div class="card-body">
+              <form id="harvestReportForm">
+
+                <!-- Cycle Selection -->
+                <div class="report-form-group">
+                  <label>Select Cycle to Harvest</label>
+                  <select id="reportCycleSelect" required>
+                    <option value="">Choose a cycle</option>
+                    <!-- Will be populated dynamically -->
+                  </select>
+                </div>
+
+                <!-- Date & Days -->
+                <div class="report-form-row">
+                  <div class="report-form-group">
+                    <label>Harvest Date</label>
+                    <input type="date" id="reportHarvestDate" required />
+                  </div>
+                  <div class="report-form-group">
+                    <label>Actual Days Grown</label>
+                    <input type="number" id="reportDaysGrown" required />
+                  </div>
+                </div>
+
+                <!-- Weight & Count -->
+                <div class="report-form-row">
+                  <div class="report-form-group">
+                    <label>Total Harvest Weight</label>
+                    <div class="report-input-unit">
+                      <input type="number" id="reportWeight" step="0.01" placeholder="0.00" required />
+                      <span class="report-unit">kg</span>
+                    </div>
+                  </div>
+                  <div class="report-form-group">
+                    <label>Number of Chilies</label>
+                    <div class="estimate-number-row">
+                      <input type="number" id="reportCount" placeholder="0" required />
+                      <button type="button" class="report-unit estimate-unit-btn" onclick="openEstimateModal()">
+                        🧮 Estimate
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- Issue Tags -->
+                <div class="report-form-group">
+                  <label class="report-label-row">
+                    <span>Issues Encountered (if any):</span>
+                    <span id="issueCount" class="report-issue-count">0 selected</span>
+                  </label>
+                  <div class="report-issues-container" id="issueTags">
+                    <span class="report-issue-tag" data-issue="pests" onclick="toggleIssueTag(this)">🐛 Pests</span>
+                    <span class="report-issue-tag" data-issue="disease" onclick="toggleIssueTag(this)">🍄 Disease</span>
+                    <span class="report-issue-tag" data-issue="overwater" onclick="toggleIssueTag(this)">💧
+                      Overwatering</span>
+                    <span class="report-issue-tag" data-issue="underwater" onclick="toggleIssueTag(this)">🏜️
+                      Underwatering</span>
+                    <span class="report-issue-tag" data-issue="heat" onclick="toggleIssueTag(this)">🌡️ Heat
+                      Stress</span>
+                    <span class="report-issue-tag" data-issue="cold" onclick="toggleIssueTag(this)">❄️ Cold
+                      Damage</span>
+                    <span class="report-issue-tag" data-issue="nutrient" onclick="toggleIssueTag(this)">🧪 Nutrient
+                      Deficiency</span>
+                    <span class="report-issue-tag" data-issue="growth" onclick="toggleIssueTag(this)">🌿 Poor
+                      Growth</span>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-red report-submit-btn">
+                  Submit Harvest Report
+                </button>
+              </form>
+            </div>
+          </div><!-- /Report Form Card -->
+
+          <!-- RIGHT: History Cards -->
+          <div class="report-history-section">
+            <div class="report-history-header" style="margin-bottom:12px;">
+              <h3>My Harvest Reports</h3>
+              <span id="reportHistoryCount" class="report-count" style="margin-left:8px;">0 reports</span>
+              <button onclick="downloadHomeGrowerSummaryPDF()" class="btn btn-outline"
+                style="font-size:12px;padding:4px 12px;margin-left:auto;">
+                📥 My Growing Journey
+              </button>
+            </div>
+
+            <!-- Date Filter Row -->
+            <div style="border:1px solid #e0e0e0;border-radius:12px;margin-bottom:12px;background:#fff;">
+
+              <!-- Filter inputs -->
+              <div style="padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <span style="font-size:15px;">📅</span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:12px;color:#666;font-weight:600;">From</span>
+                  <input type="date" id="journeyDateFrom" style="font-size:12px;padding:5px 10px;border:1px solid #ddd;
+               border-radius:8px;background:#fff;color:#333;width:140px;outline:none;" onchange="applyJourneyFilter()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:12px;color:#666;font-weight:600;">To</span>
+                  <input type="date" id="journeyDateTo" style="font-size:12px;padding:5px 10px;border:1px solid #ddd;
+               border-radius:8px;background:#fff;color:#333;width:140px;outline:none;" onchange="applyJourneyFilter()">
+                </div>
+                <button onclick="clearJourneyFilter()" style="margin-left:auto;font-size:12px;padding:5px 12px;border:1px solid #ddd;
+             border-radius:8px;background:transparent;color:#888;cursor:pointer;">
+                  ✕ Clear
+                </button>
+              </div>
+
+              <!-- Active filter tag -->
+              <div id="journeyFilterTag" style="display:none;padding:7px 16px;
+       background:#eaf4fd;border-top:1px solid #b3d4f5;">
+                <span style="font-size:11px;color:#2980b9;font-weight:600;" id="journeyFilterText"></span>
+              </div>
+
+            </div>
+
+
+            <!-- History Cards Container -->
+            <div id="historyReportsContainer">
+              <!-- Empty state -->
+              <div id="reportsEmptyState" class="report-empty-state">
+                <div class="report-empty-icon">📭</div>
+                <p class="report-empty-title">No Reports Yet</p>
+                <p class="report-empty-text">Your harvest reports will appear here</p>
+              </div>
+              <!-- History cards will be dynamically added here -->
+            </div>
+          </div><!-- /History Column -->
+
+        </div><!-- /report-two-col -->
+
+        <!-- Modal for Detailed View -->
+        <div class="harvest-modal-overlay" id="reportModalOverlay">
+          <div class="harvest-modal">
+            <div class="modal-head">
+              <div>
+                <h2 id="reportModalTitle">🌶️ Harvest Details</h2>
+                <p id="reportModalDate">Harvested on --</p>
+              </div>
+              <button class="modal-close" onclick="closeReportModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+              <!-- Percentage Display -->
+              <div class="report-modal-percentage">
+                <div class="report-modal-percent-value" id="reportModalPercent">--</div>
+                <div class="report-modal-percent-label">Harvest Quality (%)</div>
+              </div>
+
+              <!-- Harvest Details Grid -->
+              <div class="report-modal-section">
+                <h3 class="report-modal-title">📊 Harvest Details</h3>
+                <div class="report-modal-grid">
+                  <div class="report-modal-item">
+                    <div class="report-modal-label">Days Grown</div>
+                    <div class="report-modal-value" id="reportModalDays">--</div>
+                  </div>
+                  <div class="report-modal-item">
+                    <div class="report-modal-label">Total Weight</div>
+                    <div class="report-modal-value" id="reportModalWeight">--</div>
+                  </div>
+                  <div class="report-modal-item">
+                    <div class="report-modal-label">Number of Chilies</div>
+                    <div class="report-modal-value" id="reportModalCount">--</div>
+                  </div>
+                  <div class="report-modal-item">
+                    <div class="report-modal-label">Overall Quality</div>
+                    <div class="report-modal-value" id="reportModalQuality">--</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Issues Display -->
+              <div class="report-modal-section">
+                <h3 class="report-modal-title">⚠️ Issues Encountered</h3>
+                <div id="reportModalIssues" class="report-modal-issues">
+                  <!-- Issues will be populated here -->
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-foot">
+              <button class="btn btn-ghost" onclick="closeReportModal()">Close</button>
+              <button class="btn btn-outline" onclick="downloadReportPDF()">
+                📄 Download PDF
+              </button>
+              <button class="btn btn-danger" onclick="deleteReportFromModal()">
+                🗑️ Delete Report
+              </button>
+            </div>
+          </div>
+        </div><!-- /reportModalOverlay -->
+
+      </section><!-- /sec-harvest-report -->
+
+      <!-- Community Page -->
+      <section class="page" id="sec-community">
+        <div class="page-header">
+          <p class="breadcrumb">Dashboard · Community</p>
+          <h1>CiliGuide Community</h1>
+          <p class="page-sub">Share tips, ask questions and learn from fellow chili growers.</p>
+        </div>
+
+        <!-- New Post Box -->
+        <div class="comm-new-post-box" id="commNewPostBox" style="cursor:pointer;">
+          <div class="comm-new-post-top">
+            <div class="comm-user-av" id="commUserAv">-</div>
+            <div class="comm-new-post-input">
+              Create Post — share a tip, ask a question or post your harvest
+            </div>
+            <button class="btn btn-red btn-sm" style="flex-shrink:0;pointer-events:none;">
+              + Create Post
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="comm-filter-bar">
+          <button class="comm-filter-btn active" data-cat="all">All</button>
+          <button class="comm-filter-btn" data-cat="tip">💡 Tips</button>
+          <button class="comm-filter-btn" data-cat="question">❓ Questions</button>
+          <button class="comm-filter-btn" data-cat="harvest">🌱 Harvest</button>
+          <button class="comm-filter-btn" data-cat="disease">🦠 Disease</button>
+          <button class="comm-filter-btn" data-cat="general">📸 General</button>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="comm-feed" id="commFeed">
+          <div class="comm-empty-wrap" id="commEmptyState">
+            <div class="comm-empty-box">
+              <div class="comm-empty-icon">🌱</div>
+              <div class="comm-empty-title">No posts yet</div>
+              <div class="comm-empty-sub">
+                Be the first to share a tip, ask a question<br>or post your chili harvest!
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section><!--community page-->
+    </main><!-- /main -->
+
+    <!-- COMMUNITY POST MODAL -->
+    <div class="modal-overlay" id="commPostModalOverlay">
+      <div class="modal" style="max-width:500px;">
+        <div class="modal-head">
+          <div>
+            <h2 id="commModalTitle">Create Post</h2>
+            <p id="commModalSub">Share something with the community</p>
+          </div>
+          <button class="modal-close" id="commModalCloseBtn">✕</button>
+        </div>
+
+        <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+
+          <!-- Category — single row scrollable -->
+          <div class="comm-form-group" style="margin-bottom:0;">
+            <label class="comm-form-label">Category</label>
+            <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;">
+              <button class="comm-cat-pill" data-cat="tip" style="white-space:nowrap;">💡 Tip</button>
+              <button class="comm-cat-pill" data-cat="question" style="white-space:nowrap;">❓ Question</button>
+              <button class="comm-cat-pill" data-cat="harvest" style="white-space:nowrap;">🌱 Harvest</button>
+              <button class="comm-cat-pill" data-cat="disease" style="white-space:nowrap;">🦠 Disease</button>
+              <button class="comm-cat-pill" data-cat="general" style="white-space:nowrap;">📸 General</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div class="comm-form-group" style="margin-bottom:0;">
+            <label class="comm-form-label">Title</label>
+            <input type="text" class="comm-form-input" id="commPostTitle" placeholder="What's your tip or question?"
+              maxlength="100" oninput="document.getElementById('commTitleCount').textContent=this.value.length">
+            <div class="comm-char-count"><span id="commTitleCount">0</span>/100</div>
+          </div>
+
+          <!-- Body -->
+          <div class="comm-form-group" style="margin-bottom:0;">
+            <label class="comm-form-label">Details <span
+                style="font-weight:400;text-transform:none;color:#aaa;font-size:.68rem;">(optional)</span></label>
+            <textarea class="comm-form-input" id="commPostBody"
+              placeholder="Share more details about your tip or question..." maxlength="500" rows="3"
+              oninput="document.getElementById('commBodyCount').textContent=this.value.length"
+              style="min-height:80px;max-height:140px;"></textarea>
+            <div class="comm-char-count"><span id="commBodyCount">0</span>/500</div>
+          </div>
+
+          <!-- Image Upload — compact -->
+          <div class="comm-form-group" style="margin-bottom:0;">
+            <label class="comm-form-label">Photo <span
+                style="font-weight:400;text-transform:none;color:#aaa;font-size:.68rem;">(optional)</span></label>
+            <div class="comm-upload-area" id="commUploadArea">
+              <input type="file" id="commImgInput" accept="image/*">
+              <div id="commUploadPlaceholder"
+                style="display:flex;align-items:center;gap:10px;justify-content:center;padding:.6rem;">
+                <span style="font-size:1.2rem;">📷</span>
+                <span style="font-size:.82rem;color:#aaa;">Click to upload a photo of your chili plant</span>
+              </div>
+              <img id="commImgPreview" class="comm-img-preview">
+              <button class="comm-img-remove" id="commImgRemove">✕</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-foot">
+          <button class="btn btn-ghost" id="commCancelBtn">Cancel</button>
+          <button class="btn btn-red" id="commSubmitBtn">Post</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── Estimate Chilies Modal ── -->
+    <div id="estimateModalOverlay">
+      <div class="estimate-modal">
+
+        <div class="estimate-modal-header">
+          <div class="estimate-modal-icon">🧮</div>
+          <h3 class="estimate-modal-title">Estimate number of chilies</h3>
+        </div>
+
+        <p class="estimate-modal-sub">
+          Useful for large harvests (800+ chilies). Enter your total weight and we'll
+          estimate the count based on your chili variety — you can still edit the number after.
+        </p>
+
+        <div class="estimate-variety-badge">
+          🌶️ <span id="estimateVarietyLabel">No cycle selected</span>
+        </div>
+
+        <label class="estimate-weight-label">Harvest Weight</label>
+        <div class="estimate-weight-row">
+          <input type="number" id="estimateWeightInput" step="0.01" placeholder="0.00" oninput="calculateEstimate()"
+            class="estimate-weight-input" />
+          <span class="estimate-kg-badge">kg</span>
+        </div>
+
+        <div class="estimate-result-box">
+          <div class="estimate-result-num" id="estimateResult">—</div>
+          <div class="estimate-result-label">estimated chilies</div>
+        </div>
+
+        <p class="estimate-ref-note" id="estimateRefNote">
+          Select a cycle and enter weight to see estimate.
+        </p>
+
+        <div class="estimate-modal-actions">
+          <button class="btn-estimate-use" onclick="useEstimate()">
+            Use this estimate
+          </button>
+          <button class="btn-estimate-cancel" onclick="closeEstimateModal()">
+            Cancel
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- History Detail Modal -->
+    <div class="modal-history" id="historyDetailModal">
+      <div class="modal-content hdm-modal">
+        <div class="hdm-header">
+          <div>
+            <div class="hdm-title" id="hdmTitle">Details</div>
+            <div class="hdm-date" id="hdmDate"></div>
+          </div>
+          <button class="hdm-close" onclick="closeHistoryDetailModal()">✕</button>
+        </div>
+        <div class="hdm-body" id="hdmContent"></div>
+      </div>
+    </div>
+
+
+    <!-- NOTE MODAL  -->
+    <div class="modal-overlay" id="noteOverlay">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <h2>📓 Add Growth Note</h2>
+            <p id="noteCycleTitle">Active Cycle</p>
+          </div>
+          <button class="modal-close" onclick="closeNoteModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Category</label>
+            <select id="noteCategory">
+              <option>📝 General Observation</option>
+              <option>💧 Watering</option>
+              <option>🧪 Fertilizer Applied</option>
+              <option>🐛 Pest / Disease Check</option>
+              <option>🌿 Growth Update</option>
+              <option>🌶️ Harvest Note</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Note</label>
+            <textarea id="noteText" rows="4" maxlength="300"
+              placeholder="What did you observe today? e.g. First flower buds, applied fertilizer..."></textarea>
+            <p class="char-count" id="noteCount">0 / 300</p>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="noteDate" />
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-ghost" onclick="closeNoteModal()">Cancel</button>
+          <button class="btn btn-red" id="btnSaveNote">Save Note</button>
+        </div>
+      </div>
+    </div><!-- /noteOverlay -->
+
+
+    <!-- NEW HARVEST CYCLE MODAL -->
+    <div class="modal-overlay" id="cycleOverlay">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <h2>🌱 Start New Harvest Cycle</h2>
+            <p id="cycleStepLabel">Step 1 of 4 — Choose your chili variety</p>
+          </div>
+          <button class="modal-close" onclick="closeCycleModal()">✕</button>
+        </div>
+        <div class="modal-body">
+
+          <!-- Progress dots -->
+          <div class="step-dots">
+            <div class="step-dot active" id="sd1"></div>
+            <div class="step-dot" id="sd2"></div>
+            <div class="step-dot" id="sd3"></div>
+            <div class="step-dot" id="sd4"></div>
+          </div>
+
+          <!-- Step 1 -->
+          <div class="step-content active" id="step1">
+            <p class="step-title">Choose Chili Variety</p>
+            <p class="step-sub">Sets your harvest timeline and daily care reminders.</p>
+            <div class="variety-grid">
+              <div class="variety-card selected" onclick="pickVariety(this)">
+                <div class="vc-icon">🌶️</div>
+                <div class="vc-name">Cili Padi</div>
+                <div class="vc-days">🟢 Green ~67d &nbsp;·&nbsp; 🔴 Red ~82d</div>
+                <div class="vc-desc">Small &amp; fiery. Fast to mature.</div>
+              </div>
+              <div class="variety-card" onclick="pickVariety(this)">
+                <div class="vc-icon">🌶️</div>
+                <div class="vc-name">Cili Besar</div>
+                <div class="vc-days">🟢 Green ~67d &nbsp;·&nbsp; 🔴 Red ~85d</div>
+                <div class="vc-desc">Medium-large. Great for cooking.</div>
+              </div>
+              <div class="variety-card" onclick="pickVariety(this)" style="grid-column:1/-1;">
+                <div class="vc-icon">🫑</div>
+                <div class="vc-name">Cili Benggala</div>
+                <div class="vc-days">🟢 Green ~70d &nbsp;·&nbsp; 🔴 Red ~95d &nbsp;·&nbsp; 🟡 Yellow ~80d</div>
+                <div class="vc-desc">Bell pepper type — 3 harvest color stages.</div>
+              </div>
+            </div>
+            <div class="malaysia-tip" style="margin-top:14px;">
+              🇲🇾 All timings are calibrated for Malaysia's tropical climate (25–35°C).
+            </div>
+          </div><!-- /step1 -->
+
+          <!-- Step 2 -->
+          <div class="step-content" id="step2">
+            <p class="step-title">Select Harvest Color</p>
+            <p class="step-sub" id="step2Sub">When do you want to harvest?</p>
+            <div class="goal-grid" id="goalContainer"></div>
+            <div style="margin-top:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;
+                    padding:10px 14px;font-size:.82rem;color:#166534;display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1.1rem;">📅</span>
+              <span>Estimated days from planting: <strong id="previewDays">—</strong></span>
+            </div>
+          </div><!-- /step2 -->
+
+          <!-- Step 3 -->
+          <div class="step-content" id="step3">
+            <p class="step-title">Planting Details</p>
+            <p class="step-sub">When and how are you planting?</p>
+            <div class="form-group" style="margin-bottom:14px">
+              <label>Planting Date</label>
+              <input type="date" id="plantDate" />
+            </div>
+            <div class="form-group" style="margin-bottom:14px">
+              <label>Growing Location</label>
+              <input type="text" id="plantLoc" value="Selangor, Malaysia"
+                placeholder="e.g. Kuala Lumpur, Johor, Penang…" />
+            </div>
+            <div class="form-group">
+              <label>Growing Environment</label>
+              <div class="method-grid">
+                <div class="method-pill selected" onclick="pickMethod(this)">
+                  <div class="mp-icon">🏠</div>
+                  <div class="mp-label">Indoor</div>
+                  <div class="mp-note" style="font-size:.6rem;color:var(--muted);margin-top:2px;">+7 days</div>
+                </div>
+                <div class="method-pill" onclick="pickMethod(this)">
+                  <div class="mp-icon">🌤️</div>
+                  <div class="mp-label">Outdoor</div>
+                  <div class="mp-note" style="font-size:.6rem;color:var(--muted);margin-top:2px;">Base days</div>
+                </div>
+                <div class="method-pill" onclick="pickMethod(this)">
+                  <div class="mp-icon">🌳</div>
+                  <div class="mp-label">Greenhouse</div>
+                  <div class="mp-note" style="font-size:.6rem;color:var(--muted);margin-top:2px;">−5 days</div>
+                </div>
+              </div>
+            </div>
+            <div class="malaysia-tip" style="margin-top:14px;">
+              🌧️ Malaysia monsoon (Oct–Feb) may slow outdoor growth. Consider Greenhouse for consistent results.
+            </div>
+          </div><!-- /step3 -->
+
+          <!-- Step 4 -->
+          <div class="step-content" id="step4">
+            <p class="step-title">Confirm &amp; Start Tracking</p>
+            <p class="step-sub">Review your details before we begin.</p>
+            <div class="summary-box">
+              <div class="sum-row"><span>Variety</span><strong id="sumVariety">—</strong></div>
+              <div class="sum-row"><span>Harvest Goal</span><strong id="sumGoal">—</strong></div>
+              <div class="sum-row"><span>Planting Date</span><strong id="sumDate">—</strong></div>
+              <div class="sum-row"><span>Location</span><strong id="sumLoc">—</strong></div>
+              <div class="sum-row"><span>Environment</span><strong id="sumMethod">—</strong></div>
+            </div>
+            <div class="harvest-est">
+              <div class="he-label">🗓️ Estimated Harvest Date</div>
+              <div class="he-date" id="sumHarvest">—</div>
+              <div class="he-sub" id="sumDays">Based on variety &amp; color timeline</div>
+            </div>
+            <p style="font-size:.72rem;color:var(--muted);margin-top:10px;line-height:1.5;">
+              🇲🇾 Estimate calibrated for Malaysia's tropical climate. Actual harvest may vary ±5–7 days
+              depending on local rainfall and soil conditions.
+            </p>
+          </div><!-- /step4 -->
+
+        </div><!-- /modal-body -->
+        <div class="modal-foot">
+          <button class="btn btn-ghost" id="btnBack" style="display:none" onclick="prevStep()">← Back</button>
+          <button class="btn btn-red" id="btnNext" onclick="nextStep()">Next →</button>
+        </div>
+      </div><!-- /modal -->
+    </div><!-- /cycleOverlay -->
+
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logoutOverlay">
+      <div class="modal logout-modal">
+        <div class="modal-head">
+          <div>
+            <h2>🚪 Log Out</h2>
+            <p>Confirm your action</p>
+          </div>
+          <button class="modal-close" onclick="closeLogoutModal()">✕</button>
+        </div>
+
+        <div class="modal-body" style="text-align: center; padding: 30px 22px;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 10px;">
+            Are you sure you want to log out?
+          </h3>
+          <p style="color: var(--muted); font-size: 0.9rem;">
+            You will be redirected to the home page.
+          </p>
+        </div>
+
+        <div class="modal-foot">
+          <button class="btn btn-ghost" onclick="closeLogoutModal()">
+            No, Stay
+          </button>
+
+
+          <button class="btn btn-red" id="confirmLogoutBtn">
+            Yes, Log Out
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">
+      <span id="toastIcon">✓</span>
+      <div><strong id="toastTitle">Done!</strong><span id="toastMsg">Action completed.</span></div>
+    </div>
+
+    <script type="module" src="../javascript/dashboard.js"></script>
+    <script type="module" src="../javascript/navbar.js"></script>
+    <script type="module" src="../javascript/profile.js"></script>
+    <script type="module" src="../javascript/Harvest.js"></script>
+    <script type="module" src="../javascript/history.js"></script>
+    <script type="module" src="../javascript/report.js"></script>
+    <script type="module" src="../javascript/prediction.js"></script>
+    <script type="module" src="../javascript/community.js"></script>
+    <script type="module" src="../javascript/weather.js"></script>
+    <script type="module" src="../javascript/cycleReport.js"></script>
+    <script type="module" src="../javascript/analytics.js"></script>
+    <script type="module" src="../javascript/personalBest.js"></script>
+
+
+
+    <!-- Only modal open/close UI (NO logout redirect here) -->
+    <script>
+      function openLogoutModal() {
+        document.getElementById('logoutOverlay').classList.add('open');
+      }
+
+      function closeLogoutModal() {
+        document.getElementById('logoutOverlay').classList.remove('open');
+      }
+    </script>
+
+</body>
+
+</html>

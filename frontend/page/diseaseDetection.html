@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Detection - CiliGuide</title>
+    <link rel="stylesheet" type="text/css" href="../css/disease.css">
+    <link rel="icon" type="image/png" href="../assets/images/chili_logo3.png">
+</head>
+
+<body>
+    <!--Navigation-->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo"><img src="../assets/images/chili_logo3.png"></div>
+                <span class="nav-brand-text">CiliGuide</span>
+            </a>
+            <button class="menu-toggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <span class="dropdown-toggle">
+                        Features
+                        <span class="dropdown-arrow">▼</span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="chatAdvisory.html">Chat Advisory</a></li>
+                        <li><a href="soilAnalysis.html">Soil Analysis</a></li>
+                        <li><a href="selection.html">Fertilizer & Care Guidance</a></li>
+                        <li><a href="diseaseDetection.html">Disease Detection</a></li>
+                        <li><a href="postHarvest.html">Post-Harvest Suggestion</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="nav-auth"><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="detection-wrapper">
+
+            <!-- LEFT: Form Card -->
+
+            <div class="card form-card">
+                <h1 class="card-title">Disease Detection</h1>
+
+                <form id="diseaseForm" class="disease-form">
+                    <div class="form-group">
+                        <label for="chiliVariety">Chili Variety:</label>
+                        <select id="chiliVariety" required>
+                            <option value="">Select variety</option>
+                            <option value="cili-padi">Cili Padi</option>
+                            <option value="cili-besar">Cili Besar</option>
+                            <option value="cili-benggala">Cili Benggala</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="growthStage">Plant Growth Stage:</label>
+                        <select id="growthStage" required>
+                            <option value="">Select stage</option>
+                            <option value="seedling">Seedling</option>
+                            <option value="vegetative">Vegetative</option>
+                            <option value="flowering">Flowering</option>
+                            <option value="fruiting">Fruiting</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Symptoms:</label>
+                        <small class="form-hint">Select all symptoms that apply</small>
+
+                        <div class="checkbox-group">
+
+                            <label><input type="checkbox" value="yellow leaves"> Yellow leaves</label>
+                            <label><input type="checkbox" value="brown spots"> Brown spots</label>
+                            <label><input type="checkbox" value="wilting"> Wilting</label>
+                            <label><input type="checkbox" value="white powder"> White powder</label>
+                            <label><input type="checkbox" value="leaf curling"> Leaf curling</label>
+                            <label><input type="checkbox" value="holes in leaves"> Holes in leaves</label>
+                            <label><input type="checkbox" value="fruit rot"> Fruit rot</label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="symptomsDetails">Additional Details (Optional):</label>
+                        <textarea id="symptomsDetails"
+                            placeholder="Describe anything unusual (e.g. insects, weather, spreading pattern...)"
+                            rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-detect" id="detectBtn">
+                        <span id="btnText">Detect Disease</span>
+
+                        <span id="btnGenerating" class="btn-generating hidden">
+                            Analyzing symptoms<span class="dots"></span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Result Card -->
+            <div class="card result-card hidden" id="resultCard">
+                <h2 class="card-title result-title">Possible Disease Detected</h2>
+
+                <div class="result-content">
+                    <!-- Disease Name -->
+                    <div class="result-row">
+                        <span class="result-label">Disease Name:</span>
+                        <span class="resilt-value" id="diseaseName"></span>
+                    </div>
+
+                    <hr class="result-divider">
+
+                    <!-- Symptoms Identified -->
+                    <div class="result-section">
+                        <h3 class="result-section-title">🔍 Symptoms Identified:</h3>
+                        <ul class="result-list" id="symptomsList"></ul>
+                    </div>
+
+                    <hr class="result-divider">
+
+                    <!-- Recommended Actions -->
+                    <div class="result-section">
+                        <h3 class="result-section-title">🛠 Recommended Actions:</h3>
+                        <ul class="result-list" id="actionsList"></ul>
+                    </div>
+
+                    <hr class="result-divider">
+
+                    <!-- Notes -->
+                    <div class="result-section">
+                        <h3 class="result-section-title">📝 Notes:</h3>
+                        <p class="result-note" id="noteText"></p>
+                    </div>
+
+                    <!-- Save Button -->
+                    <button class="btn-save" id="saveBtn">Save Report</button>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Save Modal -->
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <div class="modal-icon">💾</div>
+            <h3>Save Disease Report</h3>
+            <p>Do you want to save this disease detection report to your records?</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-yes" id="confirmSave">Yes, Save</button>
+                <button class="btn-modal btn-no" id="cancelSave">No</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="../javascript/navbar.js"></script>
+<script type="module" src="../javascript/disease.js"></script>
+
+</html>

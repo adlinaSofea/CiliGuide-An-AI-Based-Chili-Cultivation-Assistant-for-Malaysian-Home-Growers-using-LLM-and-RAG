@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Assistant - CiliGuide</title>
+    <link rel="stylesheet" type="text/css" href="../css/chatAdvisory.css">
+    <link rel="icon" type="image/png" href="../assets/images/chili_logo3.png">
+</head>
+
+<body>
+    <!--Navigation-->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo"><img src="../assets/images/chili_logo3.png"></div>
+                <span class="nav-brand-text">CiliGuide</span>
+            </a>
+            <button class="menu-toggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <span class="dropdown-toggle">
+                        Features
+                        <span class="dropdown-arrow">▼</span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="chatAdvisory.html">Chat Advisory</a></li>
+                        <li><a href="soilAnalysis.html">Soil Analysis</a></li>
+                        <li><a href="selection.html">Fertilizer & Care Guidance</a></li>
+                        <li><a href="diseaseDetection.html">Disease Detection</a></li>
+                        <li><a href="postHarvest.html">Post-Harvest Suggestion</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="nav-auth"><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Toggle Sidebar Button -->
+    <button class="toggle-sidebar" id="toggleSidebarBtn" onclick="toggleSidebar()">☰</button>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- Sidebar Chat History -->
+        <aside class="sidebar" id="sidebar">
+            <button class="new-chat-btn" onclick="newChat()">+ New Chat</button>
+
+            <div class="sidebar-header">
+                <h3>Chat History</h3>
+            </div>
+
+            <div class="chat-history" id="chatHistory">
+                <!-- Dynamically populated by chat.js -->
+            </div>
+        </aside>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>CiliGuide Chat Advisory</h1>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-state-icon"></div>
+                    <p><strong><img src="../assets/images/chili_logo3.png">Welcome to CiliGuide!</strong></p>
+                    <p>Ask me anything about chili cultivation, disease detection, or farming tips.</p>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="disclaimer">
+                    ⚠️ CiliGuide is an AI and may make mistakes. Please verify important information.
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-container">
+                <!--  Guest usage counter bar -->
+                <div class="guest-limit-bar" id="guestLimitBar" style="display:none;">
+                    <span id="guestLimitText">3 free messages remaining</span>
+                    <a href="login.html" class="guest-login-link">Login for unlimited access →</a>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="userInput" placeholder="Type your question here..."
+                        onkeypress="handleKeyPress(event)" />
+                    <button class="send-btn" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- chat.js as module — imports Firebase directly -->
+    <script type="module" src="../javascript/chat.js"></script>
+    <script type="module" src="../javascript/navbar.js"></script>
+
+</body>
+</html>

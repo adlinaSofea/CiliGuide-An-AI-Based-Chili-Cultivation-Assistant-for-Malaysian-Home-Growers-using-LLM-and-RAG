@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Mode - CiliGuide</title>
+    <link rel="stylesheet" href="../css/beginner.css">
+    <link rel="icon" type="image/png" href="../assets/images/chili_logo3.png">
+</head>
+<body>
+
+    <!--Navigation-->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo"><img src="../assets/images/chili_logo3.png"></div>
+                <span class="nav-brand-text">CiliGuide</span>
+            </a>
+            <button class="menu-toggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <span class="dropdown-toggle">Features<span class="dropdown-arrow">▼</span></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="chatAdvisory.html">Chat Advisory</a></li>
+                        <li><a href="soilAnalysis.html">Soil Analysis</a></li>
+                        <li><a href="selection.html">Fertilizer & Care Guidance</a></li>
+                        <li><a href="diseaseDetection.html">Disease Detection</a></li>
+                        <li><a href="postHarvest.html">Post-Harvest Suggestion</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="nav-auth"><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-wrapper">
+
+            <!-- ── HERO LANDING ── -->
+            <div class="hero-section" id="heroSection">
+                <a href="selection.html" class="back-btn">← Back</a>
+                <div class="hero-body">
+                    <div class="header-badge">🌱 BEGINNER MODE</div>
+                    <h1 class="page-title">Set Up Your Chili Garden</h1>
+                    <p class="page-sub">Answer 5 simple questions — we'll create your full care plan instantly</p>
+                    <button class="btn-start" onclick="openQuiz()">Start Now</button>
+                </div>
+            </div>
+
+            <!-- ── RESULT PANEL (shown after quiz) ── -->
+            <div class="result-wrapper hidden" id="resultWrapper">
+
+                <div class="page-header">
+                    <div class="header-badge">🌱 BEGINNER MODE</div>
+                    <h1 class="page-title">Your Chili Care Plan</h1>
+                    <p class="page-sub" id="resultMeta">—</p>
+                </div>
+
+                <div class="content-layout">
+
+                    <!-- Summary pills -->
+                    <div class="summary-pills" id="summaryPills"></div>
+
+                    <div class="single-result-card">
+                        <div class="single-row">
+                            <div class="single-label">🌱 Fertilizer Recommendation</div>
+                            <div class="single-val" id="resFertilizer">—</div>
+                        </div>
+                        <div class="single-divider"></div>
+                        <div class="single-row">
+                            <div class="single-label">💧 Watering Guide</div>
+                            <div class="single-val" id="resWater">—</div>
+                        </div>
+                        <div class="single-divider"></div>
+                        <div class="single-row">
+                            <div class="single-label">☀️ Sunlight</div>
+                            <div class="single-val" id="resSunlight">—</div>
+                        </div>
+                        <div class="single-divider"></div>
+                        <div class="single-row">
+                            <div class="single-label">🪴 Soil Tip</div>
+                            <div class="single-val" id="resSoil">—</div>
+                        </div>
+                        <div class="single-divider"></div>
+                        <div class="single-row">
+                            <div class="single-label">⚠️ Beginner Tip</div>
+                            <div class="single-val" id="resTip">—</div>
+                        </div>
+                        <div class="single-divider"></div>
+                        <div class="single-row">
+                            <div class="single-label">📅 What to Expect</div>
+                            <div class="single-val" id="resExpect">—</div>
+                        </div>
+                        <div class="single-divider"></div>
+                        <div class="single-row">
+                            <div class="single-label">🐛 Pest & Disease Watch</div>
+                            <div class="single-val" id="resPest">—</div>
+                        </div>
+                    </div>
+
+                    <div class="save-row">
+                        <button class="btn-reset" onclick="resetAll()">↺ Start Over</button>
+                        <button class="btn-save" onclick="savePlan()">Save Plan</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--  QUIZ MODAL OVERLAY -->
+    <div class="quiz-overlay hidden" id="quizOverlay">
+        <div class="quiz-modal">
+
+            <!-- Progress bar -->
+            <div class="quiz-progress-track">
+                <div class="quiz-progress-fill" id="quizProgressFill" style="width:20%"></div>
+            </div>
+
+            <!-- Header -->
+            <div class="quiz-header">
+                <span class="quiz-step-label" id="quizStepLabel">Question 1 of 5</span>
+                <button class="quiz-close-btn" onclick="closeQuiz()">✕</button>
+            </div>
+
+            <!-- Questions -->
+            <div class="quiz-body">
+
+                <!-- Q1: Location -->
+                <div class="quiz-q active" id="qq1">
+                    <div class="q-title">Where are you planting?</div>
+                    <div class="q-hint">Choose the location that best matches your space.</div>
+                    <div class="opts-grid">
+                        <div class="opt-tile" data-q="q1" data-val="indoor" onclick="selectOpt(this)">
+                            <span class="ot-icon">🏢</span>
+                            <span class="ot-name">Indoor</span>
+                            <span class="ot-desc">Pots inside home</span>
+                        </div>
+                        <div class="opt-tile" data-q="q1" data-val="outdoor" onclick="selectOpt(this)">
+                            <span class="ot-icon">🌳</span>
+                            <span class="ot-name">Outdoor</span>
+                            <span class="ot-desc">Garden or backyard</span>
+                        </div>
+                        <div class="opt-tile" data-q="q1" data-val="greenhouse" onclick="selectOpt(this)">
+                            <span class="ot-icon">🏡</span>
+                            <span class="ot-name">Greenhouse</span>
+                            <span class="ot-desc">Covered space</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2: Variety -->
+                <div class="quiz-q" id="qq2">
+                    <div class="q-title">What do you want to grow?</div>
+                    <div class="q-hint">Select your preferred chili variety.</div>
+                    <div class="opts-list">
+                        <div class="opt-row" data-q="q2" data-val="cili_padi" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <div>
+                                    <div class="or-name">Cili Padi</div>
+                                    <div class="or-desc">Small &amp; very spicy · Fast growing 60–75 days</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                        <div class="opt-row" data-q="q2" data-val="cili_besar" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <div>
+                                    <div class="or-name">Cili Besar</div>
+                                    <div class="or-desc">Medium spicy, large fruit · Good for cooking</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                        <div class="opt-row" data-q="q2" data-val="cili_benggala" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <div>
+                                    <div class="or-name">Cili Benggala</div>
+                                    <div class="or-desc">Mild flavour, big fruit · Great for beginners</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3: Sunlight -->
+                <div class="quiz-q" id="qq3">
+                    <div class="q-title">How much sunlight does your space get?</div>
+                    <div class="q-hint">Look at where you plan to grow during midday.</div>
+                    <div class="opts-list">
+                        <div class="opt-row" data-q="q3" data-val="full_sun" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <div>
+                                    <div class="or-name">Full Sun — Very bright</div>
+                                    <div class="or-desc">Direct sunlight 6+ hours daily</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                        <div class="opt-row" data-q="q3" data-val="partial" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <div>
+                                    <div class="or-name">Some Sunlight</div>
+                                    <div class="or-desc">About 4–5 hours of sun per day</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                        <div class="opt-row" data-q="q3" data-val="low_light" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <div>
+                                    <div class="or-name">Not Much Light</div>
+                                    <div class="or-desc">Shaded or inside without bright windows</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4: Watering -->
+                <div class="quiz-q" id="qq4">
+                    <div class="q-title">How often can you water your plant?</div>
+                    <div class="q-hint">Be honest — we'll adjust the plan to fit your routine.</div>
+                    <div class="opts-grid">
+                        <div class="opt-tile" data-q="q4" data-val="daily" onclick="selectOpt(this)">
+                            <span class="ot-icon">🌅</span>
+                            <span class="ot-name">Once a day</span>
+                            <span class="ot-desc">Every morning</span>
+                        </div>
+                        <div class="opt-tile" data-q="q4" data-val="sometimes" onclick="selectOpt(this)">
+                            <span class="ot-icon">😅</span>
+                            <span class="ot-name">Sometimes forget</span>
+                            <span class="ot-desc">Every 2–3 days</span>
+                        </div>
+                        <div class="opt-tile" data-q="q4" data-val="frequent" onclick="selectOpt(this)">
+                            <span class="ot-icon">💦</span>
+                            <span class="ot-name">Very often</span>
+                            <span class="ot-desc">Multiple times daily</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5: Experience  -->
+                <div class="quiz-q" id="qq5">
+                    <div class="q-title">Have you grown any plant before?</div>
+                    <div class="q-hint">This helps us give the right level of guidance for you.</div>
+                    <div class="opts-list">
+                        <div class="opt-row" data-q="q5" data-val="never" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <span class="or-icon">🐣</span>
+                                <div>
+                                    <div class="or-name">Never grown anything before</div>
+                                    <div class="or-desc">This is my very first time</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                        <div class="opt-row" data-q="q5" data-val="tried" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <span class="or-icon">🌿</span>
+                                <div>
+                                    <div class="or-name">Tried before but plants died</div>
+                                    <div class="or-desc">Had some experience but it didn't work out</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                        <div class="opt-row" data-q="q5" data-val="some" onclick="selectOpt(this)">
+                            <div class="or-left">
+                                <span class="or-icon">🪴</span>
+                                <div>
+                                    <div class="or-name">Grew some simple plants</div>
+                                    <div class="or-desc">Like kangkung, herbs or flowers</div>
+                                </div>
+                            </div>
+                            <span class="or-check">○</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /quiz-body -->
+
+            <!-- Footer -->
+            <div class="quiz-footer">
+                <button class="quiz-btn-back" id="quizBackBtn" onclick="quizBack()" style="visibility:hidden;">← Back</button>
+                <button class="quiz-btn-next" id="quizNextBtn" onclick="quizNext()" disabled>Next →</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- GENERATING OVERLAY -->
+    <div class="gen-overlay hidden" id="genOverlay">
+        <div class="gen-box">
+            <div class="gen-title">Creating Your Care Plan</div>
+            <div class="gen-status" id="genStatus">Analysing your answers...</div>
+            <div class="gen-bar-wrap">
+                <div class="gen-bar" id="genBar"></div>
+            </div>
+            <div class="gen-dots"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
+
+    <!-- SAVE MODAL -->
+    <div class="modal hidden" id="saveModal">
+        <div class="modal-content">
+            <div class="modal-icon">💾</div>
+            <h3>Save Care Plan?</h3>
+            <p>This plan will be saved to your history for future reference.</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-no" onclick="hideModal()">Cancel</button>
+                <button class="btn-modal btn-yes" id="confirmSave" onclick="confirmSavePlan()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast hidden" id="toast"></div>
+
+    <script type="module" src="../javascript/beginner.js"></script>
+    <script type="module" src="../javascript/navbar.js"></script>
+
+</body>
+</html>

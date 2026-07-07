@@ -1,0 +1,315 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Allow scrolling on small screens instead of clipping content */
+    overflow-y: auto;
+    padding: 2rem 1.25rem;
+}
+
+/* ─── Layout container ────────────────────────────────────────── */
+.signup-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1000px;
+    width: 100%;
+    gap: 3rem;
+}
+
+/* ─── Left — Branding ─────────────────────────────────────────── */
+.branding {
+    flex: 1;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-circle {
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.logo-circle img {
+    width: 85px;
+    height: 85px;
+}
+
+.brand-name {
+    /* Fluid: scales from 2rem (small) up to 3.5rem (desktop) */
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: bold;
+    letter-spacing: 2px;
+    line-height: 1.1;
+}
+
+/* ─── Right — Sign Up Form ────────────────────────────────────── */
+.signup-box {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    flex-shrink: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.signup-box h2 {
+    color: #e74c3c;
+    font-size: clamp(1.4rem, 3vw, 1.75rem);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* ─── Form fields ─────────────────────────────────────────────── */
+.form-group {
+    min-height: 75px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    color: #e74c3c;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: background 0.3s, box-shadow 0.3s;
+    /* Prevent zoom on iOS (font-size must be ≥ 16px on focus) */
+    font-size: max(16px, 0.95rem);
+}
+
+.form-group input.error {
+    background: #ffe6e6;
+    box-shadow: 0 0 0 2px #e74c3c;
+}
+
+.form-group input:focus {
+    outline: none;
+    background: #e8e8e8;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.5rem;
+    display: none;
+}
+
+.error-message.show {
+    display: block !important;
+}
+
+/* ─── Submit button ───────────────────────────────────────────── */
+.signup-button {
+    width: 100%;
+    padding: 0.9rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 0.8rem;
+    /* Comfortable touch target */
+    min-height: 48px;
+}
+
+.signup-button:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+.signup-button:active {
+    transform: translateY(0);
+}
+
+/* ─── Login link ──────────────────────────────────────────────── */
+.login-link {
+    text-align: center;
+    margin-top: 1.2rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.login-link a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.login-link a:hover {
+    color: #c0392b;
+    text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TABLET  ≤ 900px  — stack branding above the form
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+    body {
+        align-items: flex-start;
+        padding: 2.5rem 1.25rem;
+    }
+
+    .signup-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .branding {
+        flex-direction: row;
+        justify-content: center;
+        text-align: left;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .logo-circle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .logo-circle img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .brand-name {
+        font-size: clamp(1.8rem, 5vw, 2.4rem);
+    }
+
+    .signup-box {
+        max-width: 400px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE  ≤ 480px
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    body {
+        padding: 1.5rem 1rem;
+    }
+
+    .signup-container {
+        gap: 1.5rem;
+    }
+
+    .branding {
+        gap: 0.75rem;
+    }
+
+    .logo-circle {
+        width: 64px;
+        height: 64px;
+    }
+
+    .logo-circle img {
+        width: 46px;
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: clamp(1.6rem, 6vw, 2rem);
+    }
+
+    .signup-box {
+        padding: 1.5rem 1.25rem;
+        border-radius: 16px;
+    }
+
+    .signup-box h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .form-group {
+        min-height: 70px;
+    }
+
+    .signup-button {
+        padding: 0.85rem;
+        font-size: 0.95rem;
+    }
+
+    .login-link {
+        font-size: 0.85rem;
+        margin-top: 1rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHORT SCREENS  ≤ 600px tall  (landscape phones, etc.)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-height: 600px) {
+    body {
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    /* Hide branding so the form fits without scrolling */
+    .branding {
+        display: none;
+    }
+
+    .signup-container {
+        justify-content: center;
+    }
+
+    .signup-box {
+        padding: 1.25rem 1.5rem;
+        max-width: 380px;
+    }
+
+    .signup-box h2 {
+        font-size: 1.35rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        min-height: 65px;
+    }
+
+    .signup-button {
+        margin-top: 0.5rem;
+    }
+
+    .login-link {
+        margin-top: 0.8rem;
+    }
+}

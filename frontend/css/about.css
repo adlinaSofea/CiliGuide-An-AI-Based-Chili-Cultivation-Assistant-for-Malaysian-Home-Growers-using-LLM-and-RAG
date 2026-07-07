@@ -1,0 +1,561 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/*Navigation*/
+nav {
+    background: #e74c3c;
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-logo {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.nav-logo img {
+    width: 30px;
+    height: 30px;
+}
+
+
+.nav-brand-text {
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-menu li {
+    position: relative;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.nav-menu a:hover {
+    opacity: 0.8;
+}
+
+/* Dropdown Styles */
+ .dropdown {
+     position: relative;
+ }
+
+ .features-text {
+    font-weight: 600;
+}
+
+ .dropdown-toggle {
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     gap: 0.3rem;
+     padding: 0.5rem;
+     user-select: none;
+     color: white;
+ }
+
+ .dropdown-arrow {
+     font-size: 0.7rem;
+     transition: transform 0.3s;
+ }
+
+ .dropdown.active .dropdown-arrow {
+     transform: rotate(180deg);
+ }
+
+ .dropdown-menu {
+     position: absolute;
+     top: 100%;
+     left: 50%;
+     transform: translateX(-50%);
+     background: white;
+     min-width: 250px;
+     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+     border-radius: 10px;
+     opacity: 0;
+     visibility: hidden;
+     transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+     margin-top: 0.5rem;
+     padding: 0.5rem 0;
+     transform: translateX(-50%) translateY(-10px);
+     max-height: 0;
+     overflow: hidden;
+ }
+
+ .dropdown.active .dropdown-menu {
+     opacity: 1;
+     visibility: visible;
+     transform: translateX(-50%) translateY(0);
+     max-height: 500px;
+ }
+
+ .dropdown-menu li {
+     list-style: none;
+ }
+
+ .dropdown-menu a {
+     display: block;
+     padding: 0.8rem 1.5rem;
+     color: #666;
+     text-decoration: none;
+     transition: background 0.3s, color 0.3s;
+     border-radius: 5px;
+     margin: 0 0.5rem;
+ }
+
+ .dropdown-menu a:hover {
+     background: #f8f8f8;
+     color: #e74c3c;
+ }
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+/*Hero Section */
+.hero-section {
+    background: #f8f8f8;
+    padding: 120px 2rem 60px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.hero-section h1 {
+    color: #e74c3c;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-section p {
+    color: #999;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/*Main content*/
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 2rem;
+}
+
+/*About Card*/
+.about-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+
+.about-image {
+    flex: 0 0 250px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.about-image img {
+    width: 260px;
+    height: 155x;
+}
+
+.about-text {
+    flex: 1;
+    text-align: justify;
+}
+
+.about-text p {
+    line-height: 1.8;
+    color: #555;
+}
+
+/*Two column section */
+.two-column {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.info-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h2 {
+    color: #e74c3c;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.info-card p {
+    color: #555;
+    line-height: 1.8;
+    text-align: justify;
+    margin-bottom: 1.5rem;
+}
+
+.info-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-card ul li {
+    color: #555;
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.info-card ul li::before {
+    content: "•";
+    color: #e74c3c;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*Academic section */
+.academic-section {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.academic-section h2 {
+    color: #e74c3c;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.academic-content {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.academic-icon {
+    flex: 0 0 200px;
+    font-size: 120px;
+    text-align: center;
+}
+
+.academic-icon img {
+    width: 155px;
+    height: 155px;
+}
+
+.academic-text {
+    flex: 1;
+}
+
+.academic-text p {
+    color: #555;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* Footer */
+footer {
+    background: #e74c3c;
+    color: white;
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.footer-brand-icon {
+    font-size: 2rem;
+    background: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-brand-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .about-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-image {
+        flex: 0 0 auto;
+    }
+
+    .about-text {
+        text-align: justify;
+    }
+
+    .two-column {
+        grid-template-columns: 1fr;
+    }
+
+    .academic-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .academic-text {
+        text-align: justify;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #e74c3c;
+        padding: 1rem 0;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+    .dropdown {
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+     }
+
+     .dropdown-toggle {
+         justify-content: center;
+     }
+
+     /* MOBILE DROPDOWN */
+     .dropdown-menu {
+         position: static !important;
+         transform: none !important;
+         box-shadow: none !important;
+         padding: 0 !important;
+         margin: 0.5rem 0 !important;
+         background: transparent !important;
+         width: 100% !important;
+         min-width: 100% !important;
+         border-radius: 0 !important;
+         display: none;
+     }
+
+     .dropdown.active .dropdown-menu {
+         display: flex !important;
+         flex-direction: column;
+         align-items: center;
+         opacity: 1 !important;
+         visibility: visible !important;
+         max-height: none !important;
+     }
+
+     .dropdown-menu li {
+         width: 90%;
+         max-width: 300px;
+         margin: 0;
+     }
+
+     .dropdown-menu a {
+         padding: 1rem 1.5rem !important;
+         margin: 0.3rem 0 !important;
+         background: rgba(255, 255, 255, 0.2) !important;
+         display: block !important;
+         border-radius: 10px !important;
+         width: 100% !important;
+         text-align: center !important;
+         font-size: 0.95rem !important;
+         color: white !important;
+     }
+
+     .dropdown-menu a:hover {
+         background: rgba(255, 255, 255, 0.3) !important;
+     }
+
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .hero-section {
+        padding: 100px 1rem 40px;
+    }
+
+    .content {
+        padding: 40px 1rem;
+    }
+
+    .about-card {
+        padding: 2rem;
+    }
+
+    .info-card {
+        padding: 2rem;
+    }
+
+    .academic-section {
+        padding: 2rem;
+    }
+
+    .about-image {
+        font-size: 100px;
+    }
+
+    .academic-icon {
+        font-size: 80px;
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .about-card {
+        padding: 1.5rem;
+    }
+
+    .info-card {
+        padding: 1.5rem;
+    }
+
+    .info-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .academic-section {
+        padding: 1.5rem;
+    }
+
+    .academic-section h2 {
+        font-size: 1.6rem;
+    }
+}
